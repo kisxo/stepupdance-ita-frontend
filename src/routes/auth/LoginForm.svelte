@@ -1,17 +1,55 @@
+<script>
+    const url = "http://localhost:8000";
+    let phone = $state();
+    let password = $state();
+
+    function login() {
+        let data = {
+            "phone": phone,
+            "password": password
+        }
+        let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+            body: JSON.stringify(data) 
+        };
+
+        fetch(url+`/token`, options)
+        .then(response => {
+            if (!response.ok) {
+                user_exists = false;
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            localStorage.setItem("jwt", data.access_token);
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+
+    }
+
+</script>
+
 <div class="login-container">
     <div class="login-card">
         <form class="login-form">
             <label for="phone">Phone number:</label>
-            <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+            <input bind:value={phone} type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
 
             <label for="password"> Password </label>
             <input
+            bind:value={password}
                 id="password"
                 type="password"
                 placeholder="******************"
             />
 
-            <button class="login-button" type="button"> Sign In </button>
+            <button onclick={login} class="login-button" type="button"> Sign In </button>
         </form>
     </div>
 </div>
