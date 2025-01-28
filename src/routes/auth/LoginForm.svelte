@@ -2,8 +2,10 @@
     const url = "http://localhost:8000";
     let phone = $state();
     let password = $state();
+    import {user} from "../../lib/user.svelte.js";
 
     function login() {
+        console.log(user)
         let data = {
             "phone": phone,
             "password": password
