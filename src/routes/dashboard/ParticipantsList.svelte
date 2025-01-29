@@ -28,7 +28,6 @@
     })
     .then(data => {
         participants = data.participants
-        console.log(participants)
     })
     .catch(error => {
         console.log(Response.code)

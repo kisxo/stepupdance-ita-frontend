@@ -25,12 +25,10 @@
         return response.json();
     })
     .then(data => {
-        console.log(data)
+        pass
     })
     .catch(error => {
-        console.log(Response.code)
     });
 
 </script>
-
 <ParticipantsList/>

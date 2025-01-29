@@ -1,6 +1,5 @@
 <script>
     let participant = $props();
-    console.log(participant);
 </script>
 
 <div class="card-container box-shadow">
