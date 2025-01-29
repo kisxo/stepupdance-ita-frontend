@@ -1,13 +1,13 @@
 <script>
-    import EventCards from "./EventCards.svelte";
+    import EventCards from "./register/EventCard.svelte";
 </script>
 
 <div class="hero">
     <span class="hero-title">Step Up<br> And <br>Let The <br> Talents Shine!</span>
     <span class="hero-text">Register now for Incredible Talent of Assam <br> Showcase your incredible talents at this stage <br> Win an opportunity to work with Step Up Production!</span>
     <div class="hero-button-container">
-        <a class="hero-register" href="">Register</a>
-        <a class="hero-login" href="/dashboard">Profile</a>
+        <a class="hero-register" href="/register">Register</a>
+        <!-- <a class="hero-login" href="/dashboard">Profile</a> -->
     </div>
 </div>
 
@@ -18,7 +18,7 @@
         flex-direction: column;
         gap: 1rem;
         text-align: center;
-        color: rgb(0, 0, 0);
+        color: #E43D12;
     }
 
     .hero-title{
@@ -44,7 +44,7 @@
         }
 
         .hero-register{
-            background-color: black;
+            background-color: #E43D12;
             color: white;
         }
 
