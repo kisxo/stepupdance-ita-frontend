@@ -7,18 +7,18 @@
     <span class="hero-text">Register now for Incredible Talent of Assam <br> Showcase your incredible talents at this stage <br> Win an opportunity to work with Step Up Production!</span>
     <div class="hero-button-container">
         <a class="hero-register" href="">Register</a>
-        <a class="hero-login" href="">Login</a>
+        <a class="hero-login" href="/dashboard">Profile</a>
     </div>
 </div>
 
 <style>
     .hero{
-        margin-block: 1rem;
-        padding: 1rem;
+        padding-block: 2rem;
         display: flex;
         flex-direction: column;
         gap: 1rem;
         text-align: center;
+        color: rgb(0, 0, 0);
     }
 
     .hero-title{
