@@ -1,7 +1,10 @@
 <script>
     import Cookies from "js-cookie"
+    import { page } from "$app/stores";
     import { goto } from '$app/navigation';
     const url = "http://localhost:8000";
+
+    const page_url = $page.url;
 
     let options = {
         method: 'GET',
@@ -16,7 +19,7 @@
         if(response.status === 401)
         {
             console.error("Auth Failed")
-            goto('/auth/login?redirect=dashboard');
+            goto('/auth/login?redirect=' + page_url.pathname);
         }
         return response.json();
     })
@@ -28,5 +31,3 @@
     });
 
 </script>
-
-{Cookies.get("jwt")}
