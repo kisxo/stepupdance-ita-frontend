@@ -42,7 +42,6 @@
 
 <style>
     .participant-list{
-        outline: 1px solid black;
         display: flex;
         flex-direction: column;
         padding: 2rem;
