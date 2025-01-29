@@ -1,13 +1,14 @@
 <div class="nav-container box-shadow">
     <a class="nav-title" href="/">Incredible Talent of Assam</a>
 
-    <a class="auth-links" href="#">Login</a>
+    <a class="auth-links" href="/auth/login">Login</a>
 </div>
 
 <style>
     .nav-container{
         padding: 1rem;
         display: flex;
+        border: 1px solid #dedede;
     }
 
     .nav-title{
