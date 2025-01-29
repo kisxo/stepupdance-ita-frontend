@@ -1,10 +1,24 @@
 <script>
+    import Cookies from "js-cookie"
+    import { page } from "$app/stores";
+    import { goto } from "$app/navigation";
+
+    const page_url = $page.url;
+    let redirect_url
+    if (page_url.searchParams.get("redirect") == null)
+    {
+        redirect_url  = "/"
+    }
+    else
+    {
+        redirect_url = page_url.searchParams.get("redirect")
+    }
+    
     const url = "http://localhost:8000";
     let phone = $state();
     let password = $state();
 
     function login() {
-        console.log(user)
         let data = {
             "phone": phone,
             "password": password
@@ -20,13 +34,14 @@
         fetch(url+`/token`, options)
         .then(response => {
             if (!response.ok) {
-                user_exists = false;
+                // user_exists = false;
                 throw new Error('Network response was not ok');
             }
             return response.json();
         })
         .then(data => {
-            localStorage.setItem("jwt", data.access_token);
+            Cookies.set('jwt', data.access_token)
+            goto(redirect_url)
         })
         .catch(error => {
             console.error('Fetch error:', error);
