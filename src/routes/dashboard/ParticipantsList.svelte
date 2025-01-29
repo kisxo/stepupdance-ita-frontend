@@ -1,11 +1,13 @@
 <script>
-    import Cookies from "js-cookie"
     import { page } from "$app/stores";
-    import { goto } from '$app/navigation';
+    import Cookies from "js-cookie"
+
+    import ParticipantCard from "./ParticipantCard.svelte";
+
     const url = "http://localhost:8000";
-    import ParticipantsList from "./ParticipantsList.svelte";
 
     const page_url = $page.url;
+    let participants
 
     let options = {
         method: 'GET',
@@ -15,7 +17,7 @@
         }
     };
 
-    fetch(url+'/users', options)
+    fetch(url+'/participants', options)
     .then(response => {
         if(response.status === 401)
         {
@@ -25,12 +27,26 @@
         return response.json();
     })
     .then(data => {
-        console.log(data)
+        participants = data.participants
+        console.log(participants)
     })
     .catch(error => {
         console.log(Response.code)
     });
-
 </script>
 
-<ParticipantsList/>
+<div class="participant-list">
+    {#each participants as participant}
+        <ParticipantCard {...participant}/>
+	{/each}
+</div>
+
+<style>
+    .participant-list{
+        outline: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        gap: 2rem;
+    }
+</style>
