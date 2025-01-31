@@ -11,6 +11,8 @@
     --primary-500: hsl(228, 100%, 51%);
     --primary-400: hsl(228, 100%, 61%);    
     --primary-300: hsl(228, 100%, 71%);
+    --primary-200: hsl(228, 100%, 81%);
+    --primary-100: hsl(228, 100%, 91%);
 
     --accent-500: hsl(336, 100%, 50%);
     
@@ -18,4 +20,6 @@
 
 body{
     background-color: var(--white);
+    background-image: radial-gradient(var(--primary-500) 0.5px, #e5e5f7 0.5px);
+    background-size: 10px 10px;
 }
