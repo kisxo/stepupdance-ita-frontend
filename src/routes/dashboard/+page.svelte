@@ -2,7 +2,8 @@
     import Cookies from "js-cookie"
     import { page } from "$app/stores";
     import { goto } from '$app/navigation';
-    const url = "https://" + window.location.host + "/api"
+    import {api_url} from "$lib/config";
+
     import ParticipantsList from "./ParticipantsList.svelte";
 
     const page_url = $page.url;
@@ -15,7 +16,7 @@
         }
     };
 
-    fetch(url+'/users', options)
+    fetch(api_url+'/users/', options)
     .then(response => {
         if(response.status === 401)
         {

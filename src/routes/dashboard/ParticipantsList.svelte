@@ -1,10 +1,9 @@
 <script>
     import { page } from "$app/stores";
     import Cookies from "js-cookie"
+    import { api_url } from "$lib/config";
 
     import ParticipantCard from "./ParticipantCard.svelte";
-
-    const url = "https://" + window.location.host + "/api"
 
     const page_url = $page.url;
     let participants
@@ -17,7 +16,7 @@
         }
     };
 
-    fetch(url+'/participants', options)
+    fetch(api_url+'/participants/', options)
     .then(response => {
         if(response.status === 401)
         {

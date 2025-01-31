@@ -2,6 +2,7 @@
     import Cookies from "js-cookie"
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
+    import { api_url } from "$lib/config";
 
     const page_url = $page.url;
     let redirect_url
@@ -14,7 +15,6 @@
         redirect_url = page_url.searchParams.get("redirect")
     }
     
-    const url = "https://" + window.location.host + "/api"
     let phone = $state();
     let password = $state();
 
@@ -31,7 +31,7 @@
             body: JSON.stringify(data) 
         };
 
-        fetch(url+`/token`, options)
+        fetch(api_url+`/token/`, options)
         .then(response => {
             if (!response.ok) {
                 // user_exists = false;
