@@ -11,7 +11,7 @@
 
 <style>
     .nav-container{
-        padding: 1rem;
+        padding:1rem;
         display: flex;
         color: var(--white-100);
         background-color: var(--primary-500);
@@ -20,6 +20,7 @@
     .nav-title{
         font-weight: bold;
         margin-right: auto;
+        border-bottom: 1px solid white;
     }
 
     .box-shadow {
