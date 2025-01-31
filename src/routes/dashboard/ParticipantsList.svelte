@@ -4,7 +4,7 @@
 
     import ParticipantCard from "./ParticipantCard.svelte";
 
-    const url = "http://localhost:8000";
+    const url = "https://" + window.location.host + "/api"
 
     const page_url = $page.url;
     let participants

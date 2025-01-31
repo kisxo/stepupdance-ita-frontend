@@ -14,7 +14,7 @@
         redirect_url = page_url.searchParams.get("redirect")
     }
     
-    const url = "http://localhost:8000";
+    const url = "https://" + window.location.host + "/api"
     let phone = $state();
     let password = $state();
 

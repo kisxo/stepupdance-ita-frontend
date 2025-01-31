@@ -2,7 +2,7 @@
     import Cookies from "js-cookie"
     import { page } from "$app/stores";
     import { goto } from '$app/navigation';
-    const url = "http://localhost:8000";
+    const url = "https://" + window.location.host + "/api"
     import ParticipantsList from "./ParticipantsList.svelte";
 
     const page_url = $page.url;
