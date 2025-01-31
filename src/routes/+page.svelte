@@ -47,9 +47,5 @@
             background-color: #E43D12;
             color: white;
         }
-
-        .hero-login{
-            outline: 1px solid #666666;
-        }
     }
 </style>
