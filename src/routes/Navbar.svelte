@@ -14,7 +14,7 @@
         padding: 1rem;
         display: flex;
         color: white;
-        background-color: #E43D12;
+        background-color: var(--primary-500);
     }
 
     .nav-title{
