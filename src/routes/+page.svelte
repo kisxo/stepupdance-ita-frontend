@@ -18,15 +18,16 @@
         flex-direction: column;
         gap: 1rem;
         text-align: center;
-        color: #E43D12;
     }
 
     .hero-title{
+        color: var(--primary-500);
         font-size: 1.8rem;
         font-weight: bold;
     }
 
     .hero-text{
+        color: var(--white-500);
         font-size: .8rem;
         padding-block: .5rem;
     }
@@ -44,8 +45,9 @@
         }
 
         .hero-register{
-            background-color: #E43D12;
-            color: white;
+            font-weight: bold;
+            background-color: var(--accent-500);
+            color: var(--white);
         }
     }
 </style>

@@ -13,7 +13,7 @@
     .nav-container{
         padding: 1rem;
         display: flex;
-        color: white;
+        color: var(--white-100);
         background-color: var(--primary-500);
     }
 
