@@ -1,0 +1,9 @@
+[Unit]
+Description=FastAPI application step Up Dance 
+
+[Service]
+User=kisxo
+Group=kisxo
+WorkingDirectory=/home/kisxo/stepupdance/stepupdance-fastapi-backend
+ExecStart=/home/kisxo/stepupdance/stepupdance-fastapi-backend/.venv/bin/uvicorn app.main:app --port 8000 --workers 4 
+Restart=always
