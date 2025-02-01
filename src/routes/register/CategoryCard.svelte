@@ -8,7 +8,7 @@
         </div>
         <div class="card-detail">
             <span class="card-title"> Dance </span>
-            <a href="/register/dance">Continue
+            <a href="/register/dance">Next
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
                     <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
                   </svg>
@@ -109,7 +109,7 @@
             background-color: var(--accent-600);
             color: var(--white);
             border-radius: 1.5rem;
-            font-size: 1;
+            font-size: .7rem;
             gap: 1rem;
             padding: .4rem .5rem .4rem 1rem;
             display: flex;
@@ -118,15 +118,15 @@
             align-items: center;
 
             & > svg{
-                height:35px;
-                width: 35px;
+                height:20px;
+                width: 20px;
             }
         }
     }
 
     .card-title{
         font-weight: bold;
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 
 </style>
