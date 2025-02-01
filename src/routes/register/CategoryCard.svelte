@@ -19,6 +19,11 @@
     <div class="category-card">
         <div class="card-detail">
             <span class="card-title"> Fashion </span>
+            <a href="/register/fashion">Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
+                  </svg>
+            </a>
         </div>
         <div class="card-image-container">
             <img src="/images/fashion-miss.png" alt="">
@@ -31,12 +36,22 @@
         </div>
         <div class="card-detail">
             <span class="card-title"> Art </span>
+            <a href="/register/art">Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
+                  </svg>
+            </a>
         </div>
     </div>
 
     <div class="category-card">
         <div class="card-detail">
             <span class="card-title"> Cooking </span>
+            <a href="/register/cooking">Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
+                  </svg>
+            </a>
         </div>
         <div class="card-image-container">
             <img src="/images/cooking.png" alt="">
@@ -49,6 +64,11 @@
         </div>
         <div class="card-detail">
             <span class="card-title"> Yoga </span>
+            <a href="/register/yoga">Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
+                  </svg>
+            </a>
         </div>
     </div>
 </div>
@@ -106,7 +126,7 @@
         align-items: center;
 
         & > a {
-            background-color: var(--accent-600);
+            background-color: var(--primary-400);
             color: var(--white);
             border-radius: 1.5rem;
             font-size: .7rem;
