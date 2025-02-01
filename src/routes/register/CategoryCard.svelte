@@ -8,6 +8,11 @@
         </div>
         <div class="card-detail">
             <span class="card-title"> Dance </span>
+            <a href="/register/dance">Continue
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
+                  </svg>
+            </a>
         </div>
     </div>
 
@@ -71,8 +76,8 @@
         justify-content: space-between;
         background-color: var(--primary-100);
         color: var(--primary-400);
-        border-top: 1px solid var(--accent-500);
-        border-right: 1px solid var(--accent-500);
+        border-top: 1px solid var(--primary-500);
+        border-right: 1px solid var(--primary-500);
         border-left: 5px solid var(--primary-500);
         border-bottom: 5px solid var(--primary-500);
     }
@@ -94,9 +99,29 @@
     .card-detail{
         /* background-color: var(--white); */
         width: 50%;
-        display: block;
-        place-content: center;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+
+        & > a {
+            background-color: var(--accent-600);
+            color: var(--white);
+            border-radius: 1.5rem;
+            font-size: 1;
+            gap: 1rem;
+            padding: .4rem .5rem .4rem 1rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            & > svg{
+                height:35px;
+                width: 35px;
+            }
+        }
     }
 
     .card-title{
