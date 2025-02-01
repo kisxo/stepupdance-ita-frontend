@@ -5,8 +5,10 @@
     import {api_url} from "$lib/config";
 
     import ParticipantsList from "./ParticipantsList.svelte";
+    import Loader from "$lib/components/Loader.svelte";
 
     const page_url = $page.url;
+    let auth_state = $state(false);
 
     let options = {
         method: 'GET',
@@ -26,10 +28,16 @@
         return response.json();
     })
     .then(data => {
+        auth_state = true
         pass
     })
     .catch(error => {
     });
 
 </script>
-<ParticipantsList/>
+
+{#if auth_state}
+    <ParticipantsList/>
+{:else}
+	<Loader/>
+{/if}
