@@ -3,6 +3,7 @@
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
     import { api_url } from "$lib/config";
+    import { readonly } from "svelte/store";
 
     const page_url = $page.url;
     let redirect_url;
@@ -35,7 +36,12 @@
             })
             .then((data) => {
                 if (data) {
-                    goto("/auth/login?redirect=" + redirect_url + "&phone=" + phone);
+                    goto(
+                        "/auth/login?redirect=" +
+                            redirect_url +
+                            "&phone=" +
+                            phone
+                    );
                 } else {
                     new_user = true;
                 }
@@ -45,23 +51,22 @@
             });
     }
 
-    function signup(){
-        if(password != confirm_password)
-        {
-            alert("Password must be same!")
-            return
+    function signup() {
+        if (password != confirm_password) {
+            alert("Password must be same!");
+            return;
         }
 
         let data = {
-            "phone": phone,
-            "password": password
-        }
+            phone: phone,
+            password: password,
+        };
         let options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(data) 
+            body: JSON.stringify(data),
         };
 
         fetch(api_url + `/users/`, options)
@@ -74,9 +79,14 @@
             })
             .then((data) => {
                 if (data) {
-                    goto("/auth/login?redirect=" + redirect_url + "&phone=" + phone);
+                    goto(
+                        "/auth/login?redirect=" +
+                            redirect_url +
+                            "&phone=" +
+                            phone
+                    );
                 } else {
-                    alert("Try Again")
+                    alert("Try Again");
                 }
             })
             .catch((error) => {
@@ -88,14 +98,16 @@
 <div class="auth-card">
     <form class="form">
         <label for="phone">Phone number:</label>
-        <input
-            bind:value={phone}
-            type="tel"
-            id="phone"
-            name="phone"
-            pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-        />
+
         {#if new_user}
+            <input
+                bind:value={phone}
+                type="tel"
+                id="phone"
+                name="phone"
+                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                readonly
+            />
             <label for="password"> Password </label>
             <input
                 bind:value={password}
@@ -110,11 +122,21 @@
                 type="password"
                 placeholder="******************"
             />
-            <button onclick={signup} class="button" type="button"> SignUp </button>
+            <button onclick={signup} class="button" type="button">
+                SignUp
+            </button>
         {:else}
-            <button onclick={check_phone} class="button" type="button"> Verify </button>
+            <input
+                bind:value={phone}
+                type="tel"
+                id="phone"
+                name="phone"
+                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+            />
+            <button onclick={check_phone} class="button" type="button">
+                Verify
+            </button>
         {/if}
-        
     </form>
 </div>
 
