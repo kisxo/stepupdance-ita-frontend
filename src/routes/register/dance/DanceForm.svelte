@@ -72,10 +72,9 @@
     <span class="field-title text-md">Full Name</span>
     <input
         bind:value={fname}
-        type="tel"
-        id="phone"
-        name="phone"
-        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+        type="text"
+        id="fname"
+        name="fname"
         class="inline-flex items-center text-gray-600 py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
     />
 
@@ -86,7 +85,7 @@
                 inputmode="numeric"
                 type="text"
                 id="age"
-                name="phone"
+                name="age"
                 class="w-2/3 text-gray-600 py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
             />
         </div>
