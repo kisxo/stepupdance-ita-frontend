@@ -2,6 +2,9 @@
     import { Select } from "bits-ui";
     // import { CaretUpDown, Check, Palette } from "$icons/index.js";
     import { flyAndScale } from "$lib/bits-ui/utils/transitions";
+    import { page } from "$app/stores";
+    import { api_url } from "$lib/config";
+    import Loader from "$lib/components/Loader.svelte";
 
     const themes = [
         { value: "light-monochrome", label: "Light Monochrome" },
@@ -13,12 +16,37 @@
         { value: "male", label: "Male" },
         { value: "female", label: "Female" },
     ];
+
     let fname = $state();
+    let events = $state();
+    const page_url = $page.url;
+
+    let options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+
+    fetch(api_url+'/events/dance', options)
+    .then(response => {
+        if(response.status === 401)
+        {
+            console.error("Auth Failed")
+        }
+        return response.json();
+    })
+    .then(data => {
+        events =  data.events
+    })
+    .catch(error => {
+    });
 </script>
 
+{#if events}
 <div class="form-container font-sans bg-gray-50 border-2 border-gray-300 rounded-md">
     <span class="field-title text-md">Select category</span>
-    <Select.Root items={themes}>
+    <Select.Root >
         <Select.Trigger
             class="inline-flex bg-white text-gray-600 items-center py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50  focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
             aria-label="Select a theme"
@@ -53,13 +81,13 @@
             transition={flyAndScale}
             sideOffset={8}
         >
-            {#each themes as theme}
+            {#each events as event}
                 <Select.Item
                     class="flex h-10 w-full  select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm outline-none transition-all duration-75 data-[highlighted]:bg-muted"
-                    value={theme.value}
-                    label={theme.label}
+                    value={event.title}
+                    label={event.title}
                 >
-                    {theme.label}
+                    {event.title}
                     <Select.ItemIndicator class="ml-auto" asChild={false}>
                         <!-- <Check /> -->
                     </Select.ItemIndicator>
@@ -147,6 +175,9 @@
         </div>
     </div>
 </div>
+{:else}
+    <Loader/>
+{/if}
 
 <style>
     .form-container {

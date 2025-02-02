@@ -5,11 +5,19 @@
     import {api_url} from "$lib/config";
 
     import Loader from "$lib/components/Loader.svelte";
-    import DanceForm from "./DanceForm.svelte";
+    import RegisterForm from "./RegisterForm.svelte";
 
     let auth_state = $state(false);
 
     const page_url = $page.url;
+
+    let category;
+
+    if (page_url.searchParams.get("category") == null) {
+        goto("/register")
+    } else {
+        category = page_url.searchParams.get("category");
+    }
 
     let options = {
         method: 'GET',
@@ -25,7 +33,7 @@
         {   
 
             console.error("Auth Failed")
-            goto('/auth/signup?redirect=' + page_url.pathname);
+            goto('/auth/signup?redirect=' + page_url.pathname + "?category=" + category);
         }
         return response.json();
     })
@@ -39,7 +47,7 @@
 </script>
 
 {#if auth_state}
-    <DanceForm/>
+    <RegisterForm/>
 {:else}
     <Loader/>
 {/if}
