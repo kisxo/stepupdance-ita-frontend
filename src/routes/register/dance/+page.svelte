@@ -5,6 +5,7 @@
     import {api_url} from "$lib/config";
 
     import Loader from "$lib/components/Loader.svelte";
+    import DanceForm from "./DanceForm.svelte";
 
     let auth_state = $state(false);
 
@@ -38,7 +39,7 @@
 </script>
 
 {#if auth_state}
-pass
+    <DanceForm/>
 {:else}
     <Loader/>
 {/if}
