@@ -11,7 +11,7 @@
 
     const page_url = $page.url;
 
-    let category;
+    let category = $state();
 
     if (page_url.searchParams.get("category") == null) {
         goto("/register")
@@ -47,7 +47,7 @@
 </script>
 
 {#if auth_state}
-    <RegisterForm/>
+    <RegisterForm {category}/>
 {:else}
     <Loader/>
 {/if}

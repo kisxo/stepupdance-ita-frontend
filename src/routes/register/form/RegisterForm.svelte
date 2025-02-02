@@ -5,6 +5,8 @@
     import { page } from "$app/stores";
     import { api_url } from "$lib/config";
     import Loader from "$lib/components/Loader.svelte";
+    let {category} = $props();
+    console.log(category);
 
     const themes = [
         { value: "light-monochrome", label: "Light Monochrome" },
@@ -28,7 +30,7 @@
         }
     };
 
-    fetch(api_url+'/events/dance', options)
+    fetch(api_url+'/events/'+category, options)
     .then(response => {
         if(response.status === 401)
         {
