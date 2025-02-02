@@ -1,8 +1,8 @@
 <script>
-    import Cookies from "js-cookie"
+    import Cookies from "js-cookie";
     import { page } from "$app/stores";
-    import { goto } from '$app/navigation';
-    import {api_url} from "$lib/config";
+    import { goto } from "$app/navigation";
+    import { api_url } from "$lib/config";
 
     import Loader from "$lib/components/Loader.svelte";
     import RegisterForm from "./RegisterForm.svelte";
@@ -14,40 +14,41 @@
     let category = $state();
 
     if (page_url.searchParams.get("category") == null) {
-        goto("/register")
+        goto("/register");
     } else {
         category = page_url.searchParams.get("category");
     }
 
     let options = {
-        method: 'GET',
+        method: "GET",
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': "Bearer " + Cookies.get("jwt")
-        }
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + Cookies.get("jwt"),
+        },
     };
 
-    fetch(api_url+'/users/', options)
-    .then(response => {
-        if(response.status === 401)
-        {   
-
-            console.error("Auth Failed")
-            goto('/auth/signup?redirect=' + page_url.pathname + "?category=" + category);
-        }
-        return response.json();
-    })
-    .then(data => {
-        auth_state = true
-        pass
-    })
-    .catch(error => {
-    });
-
+    fetch(api_url + "/users/", options)
+        .then((response) => {
+            if (response.status === 401) {
+                console.error("Auth Failed");
+                goto(
+                    "/auth/signup?redirect=" +
+                        page_url.pathname +
+                        "?category=" +
+                        category
+                );
+            }
+            return response.json();
+        })
+        .then((data) => {
+            auth_state = true;
+            pass;
+        })
+        .catch((error) => {});
 </script>
 
 {#if auth_state}
-    <RegisterForm {category}/>
+    <RegisterForm {category} />
 {:else}
-    <Loader/>
+    <Loader />
 {/if}
