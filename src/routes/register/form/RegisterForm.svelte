@@ -67,6 +67,26 @@
                     <option value={event._id}>{event.title}</option>
                 {/each}
             </select>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="ml-auto size-6 text-muted-foreground text-gray-200"
+                viewBox="0 0 256 256"
+                ><rect width="256" height="256" fill="none" /><polyline
+                    points="80 176 128 224 176 176"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                /><polyline
+                    points="80 80 128 32 176 80"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="16"
+                /></svg
+            >
         </div>
 
         <span class="field-title text-[.9rem] font-medium">Full Name</span>
@@ -167,14 +187,16 @@
     .group-select {
         display: flex;
         background-color: white;
-
-        select{
+        position: relative;
+        select {
             width: 100%;
             background-color: white;
-            option{
-                padding: .5rem;
-                background-color: inherit;
-            }
+            appearance: none;
+        }
+        svg{
+            position: absolute;
+            top: 20%;
+            right: 2%;
         }
     }
 
