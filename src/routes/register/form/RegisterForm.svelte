@@ -2,6 +2,11 @@
     import { page } from "$app/stores";
     import { api_url } from "$lib/config";
     import Loader from "$lib/components/Loader.svelte";
+    import { AlertDialog } from "bits-ui";
+    import { fade } from "svelte/transition";
+    // import { flyAndScale } from "$lib/utils/index.js";
+    import { flyAndScale } from "$lib/bits-ui/utils/transitions";
+    import { derived } from "svelte/store";
     let { category } = $props();
     console.log(category);
 
@@ -13,7 +18,18 @@
     let fname = $state();
     let age = $state();
     let gender = $state();
-    let eventId = $state();
+    let selected_event = $state("");
+    let dialogOpen = $state(false);
+
+    let input_data = $derived({
+        "fname": fname,
+        "age": age,
+        "gender": gender,
+        "detailId": selected_event._id,
+    });
+    function gugu() {
+        dialogOpen = true;
+    }
 
     let events = $state();
     const page_url = $page.url;
@@ -53,10 +69,10 @@
 
         <span class="field-title text-[.9rem] font-medium pt-[1rem]">Category</span>
         <div class="group-select">
-            <select bind:value={eventId} class="drop-shadow-sm bg-white text-gray-600 items-center rounded-md border border-border-input px-[11px] py-[10px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background">
+            <select bind:value={selected_event} class="drop-shadow-sm bg-white text-gray-600 items-center rounded-md border border-border-input px-[11px] py-[10px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background">
                 <option selected disabled hidden></option>
                 {#each events as event}
-                    <option value={event._id}>{event.title}</option>
+                    <option value={event}>{event.title}</option>
                 {/each}
             </select>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto size-6 text-muted-foreground text-gray-200" viewBox="0 0 256 256">
@@ -92,7 +108,7 @@
             </div>
         </div>
 
-        <button class=" h-10 my-[1.5rem] text-white bg-blue-500 rounded-input bg-dark px-[21px] text-[15px] font-semibold text-background shadow-mini hover:bg-dark/95 active:scale-98 active:transition-all">
+        <button onclick={gugu} class=" h-10 my-[1.5rem] text-white bg-blue-500 rounded-input bg-dark px-[21px] text-[15px] font-semibold text-background shadow-mini hover:bg-dark/95 active:scale-98 active:transition-all">
             Register
         </button>
 
@@ -102,8 +118,45 @@
         <br>
         {gender}
         <br>
-        {eventId}
+        {selected_event._id}
     </div>
+
+    <AlertDialog.Root bind:open={dialogOpen}>
+        <AlertDialog.Portal>
+          <AlertDialog.Overlay
+            transition={fade}
+            transitionConfig={{ duration: 150 }}
+            class="fixed inset-0 z-50 bg-black/80"
+          />
+          <AlertDialog.Content
+            transition={flyAndScale}
+            class="fixed bg-white left-[50%] top-[50%] z-50 grid w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-md border bg-background p-7 shadow-popover outline-none sm:max-w-lg md:w-full"
+          >
+            <div class="flex flex-col gap-4 pb-6">
+              <AlertDialog.Title class="text-lg font-semibold tracking-tight"
+                >Confirm Registration</AlertDialog.Title
+              >
+              <AlertDialog.Description class="text-sm text-foreground-alt">
+                Name: {input_data.fname}
+                <br>
+                Age: {input_data.age}
+                <br>
+                Gender: {input_data.gender}
+                <br>
+                Event: {selected_event.title}
+              </AlertDialog.Description>
+            </div>
+            <div class="flex w-full items-center justify-center gap-2">
+              <AlertDialog.Cancel
+                class="inline-flex bg-gray-200 py-[.5rem] mx-auto h-input w-full items-center justify-center rounded-input bg-muted text-[15px] font-medium shadow-mini transition-all hover:bg-dark-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
+                >Cancel</AlertDialog.Cancel>
+                <AlertDialog.Action
+                class="inline-flex bg-black py-[.5rem] text-white h-input w-full items-center justify-center rounded-input bg-dark text-[15px] font-semibold text-background shadow-mini transition-all hover:bg-dark/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dark focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
+                >Continue</AlertDialog.Action>
+            </div>
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
 {:else}
     <Loader />
 {/if}
