@@ -36,14 +36,6 @@
             events = data.events;
         })
         .catch((error) => {});
-
-        
-
-        let x = $state("");
-
-        function gugu(){
-            console.log(x)
-        }
 </script>
 
 {#if events}
@@ -63,51 +55,20 @@
             </span>
         </div>
 
-        <span class="field-title text-[.9rem] font-medium pt-[1rem]">Category</span>
-        <Select.Root onSelectedChange={gugu}>
-            <Select.Trigger
-                class="inline-flex mb-[1rem] drop-shadow-sm bg-white text-gray-600 items-center rounded-md border border-border-input bg-background px-[11px] py-[6px] text-sm transition-colors placeholder:text-foreground-alt/50  focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
-                aria-label="Select a theme"
+        <span class="field-title text-[.9rem] font-medium pt-[1rem]"
+            >Category</span
+        >
+        <div class="group-select">
+            <select
+                class="drop-shadow-sm bg-white text-gray-600 items-center rounded-md border border-border-input px-[11px] py-[10px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"
             >
-                <Select.Value class="text-sm text-gray-600" placeholder="" />
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="ml-auto size-6 text-muted-foreground text-gray-200"
-                    viewBox="0 0 256 256"
-                    ><rect width="256" height="256" fill="none" /><polyline
-                        points="80 176 128 224 176 176"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="16"
-                    /><polyline
-                        points="80 80 128 32 176 80"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="16"
-                    /></svg
-                >
-            </Select.Trigger>
-            <Select.Content
-                class="w-full rounded-xl text-gray-600 border bg-white border-muted bg-background px-1 py-3 shadow-popover outline-none"
-                transition={flyAndScale}
-                sideOffset={8}
-            >
+                <option selected disabled hidden></option>
                 {#each events as event}
-                    <Select.Item
-                        class="flex h-10 w-full  select-none items-center rounded-button py-3 pl-5 pr-1.5 text-sm outline-none transition-all duration-75 data-[highlighted]:bg-muted"
-                        value={event.title}
-                        label={event.title}
-                    >
-                        {event.title}
-                    </Select.Item>
+                    <option value={event._id}>{event.title}</option>
                 {/each}
-            </Select.Content>
-            <Select.Input bind:value={x} name="favoriteFruit" />
-        </Select.Root>
+            </select>
+        </div>
+
         <span class="field-title text-[.9rem] font-medium">Full Name</span>
         <input
             bind:value={fname}
@@ -190,7 +151,7 @@
             </div>
         </div>
 
-        <Button.Root on:click={gugu}
+        <Button.Root
             class=" h-10 my-[1.5rem] text-white bg-blue-500 rounded-input bg-dark
 	                px-[21px] text-[15px] font-semibold text-background shadow-mini
                     hover:bg-dark/95 active:scale-98 active:transition-all"
@@ -203,6 +164,20 @@
 {/if}
 
 <style>
+    .group-select {
+        display: flex;
+        background-color: white;
+
+        select{
+            width: 100%;
+            background-color: white;
+            option{
+                padding: .5rem;
+                background-color: inherit;
+            }
+        }
+    }
+
     .participant-detail {
         display: flex;
         flex-direction: row;
