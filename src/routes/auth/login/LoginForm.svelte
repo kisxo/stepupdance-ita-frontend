@@ -6,17 +6,19 @@
 
     const page_url = $page.url;
     let redirect_url
+    let phone = $state();
+    let password = $state();
     if (page_url.searchParams.get("redirect") == null)
     {
         redirect_url  = "/"
     }
     else
-    {
+    {   
+        phone = page_url.searchParams.get("phone")
         redirect_url = page_url.searchParams.get("redirect")
     }
     
-    let phone = $state();
-    let password = $state();
+    
 
     function login() {
         let data = {
