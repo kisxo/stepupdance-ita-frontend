@@ -19,7 +19,7 @@
     <div class="category-card">
         <div class="card-detail">
             <span class="card-title"> Fashion </span>
-            <a href="/register/fashion">Next
+            <a href="/register/form?category=fashion">Next
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
                     <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
                   </svg>
@@ -36,7 +36,7 @@
         </div>
         <div class="card-detail">
             <span class="card-title"> Art </span>
-            <a href="/register/art">Next
+            <a href="/register/form?category=art">Next
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
                     <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
                   </svg>
@@ -47,7 +47,7 @@
     <div class="category-card">
         <div class="card-detail">
             <span class="card-title"> Cooking </span>
-            <a href="/register/cooking">Next
+            <a href="/register/form?category=cooking">Next
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
                     <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
                   </svg>
@@ -64,7 +64,7 @@
         </div>
         <div class="card-detail">
             <span class="card-title"> Yoga </span>
-            <a href="/register/yoga">Next
+            <a href="/register/form?category=yoga">Next
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
                     <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8m5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707z"/>
                   </svg>
