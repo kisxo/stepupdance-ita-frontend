@@ -2,7 +2,7 @@
     let participant = $props();
 </script>
 
-<div class="card-container box-shadow">
+<div class="card-container box-shadow bg-white">
     <div class="heading">
         <span class="title"> {participant.detail.title} </span>
         <span class="event-detail">
