@@ -1,4 +1,5 @@
 <script >
+    import Cookies from "js-cookie";
     import { page } from "$app/stores";
     import { api_url } from "$lib/config";
     import Loader from "$lib/components/Loader.svelte";
@@ -52,6 +53,29 @@
             events = data.events;
         })
         .catch((error) => {});
+
+    function register() {
+        let options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': "Bearer " + Cookies.get("jwt")
+            },
+            body: JSON.stringify(input_data),
+        };
+
+        fetch(api_url + `/participants/`, options)
+            .then((response) => {
+                console.log(response)
+                return response.json();
+            })
+            .then((data) => {
+                // alert("Success")
+            })
+            .catch((error) => {
+                console.error("Fetch error:", error);
+            });
+        }
 </script>
 
 {#if events}
@@ -150,7 +174,7 @@
               <AlertDialog.Cancel
                 class="inline-flex bg-gray-200 py-[.5rem] mx-auto h-input w-full items-center justify-center rounded-input bg-muted text-[15px] font-medium shadow-mini transition-all hover:bg-dark-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
                 >Cancel</AlertDialog.Cancel>
-                <AlertDialog.Action
+                <AlertDialog.Action onclick={register}
                 class="inline-flex bg-black py-[.5rem] text-white h-input w-full items-center justify-center rounded-input bg-dark text-[15px] font-semibold text-background shadow-mini transition-all hover:bg-dark/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dark focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
                 >Continue</AlertDialog.Action>
             </div>
