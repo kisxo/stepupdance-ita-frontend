@@ -5,16 +5,10 @@
     import Loader from "$lib/components/Loader.svelte";
     import { AlertDialog } from "bits-ui";
     import { fade } from "svelte/transition";
-    // import { flyAndScale } from "$lib/utils/index.js";
     import { flyAndScale } from "$lib/bits-ui/utils/transitions";
     import { derived } from "svelte/store";
+    import { parse } from "svelte/compiler";
     let { category } = $props();
-    console.log(category);
-
-    const genders = [
-        { value: "male", label: "Male" },
-        { value: "female", label: "Female" },
-    ];
 
     let fname = $state();
     let age = $state();
@@ -23,10 +17,10 @@
     let dialogOpen = $state(false);
 
     let input_data = $derived({
+        "eventId": selected_event._id,
         "fname": fname,
-        "age": age,
+        "age": parseInt(age),
         "gender": gender,
-        "detailId": selected_event._id,
     });
     function gugu() {
         dialogOpen = true;
