@@ -1,4 +1,4 @@
-<script >
+<script>
     import Cookies from "js-cookie";
     import { page } from "$app/stores";
     import { api_url } from "$lib/config";
@@ -8,13 +8,18 @@
     import { flyAndScale } from "$lib/bits-ui/utils/transitions";
     import { derived } from "svelte/store";
     import { parse } from "svelte/compiler";
+    import DangerModal from "./DangerModal.svelte";
     let { category } = $props();
 
     let fname = $state();
     let age = $state();
     let gender = $state();
+    let duo_name1 = $state();
+    let duo_name2 = $state();
+    let group_name = $state();
     let selected_event = $state("");
     let dialogOpen = $state(false);
+    let alertOpen = $state(false);
 
     let input_data = $derived({
         "eventId": selected_event._id,
@@ -22,8 +27,76 @@
         "age": parseInt(age),
         "gender": gender,
     });
-    function gugu() {
+
+    function get_input_data(){
+        if(validate_input() == false){ return false }
+
+        if(selected_event.title === "Dance Duo"){
+            return {
+                "eventId": selected_event._id,
+                "duo_name1": duo_name1,
+                "duo_name2": duo_name2
+            }
+        }
+        else if(selected_event.title === "Dance Group"){
+            return {
+                "eventId": selected_event._id,
+                "group_name": group_name
+            }
+        }
+        else{
+            return {
+                "eventId": selected_event._id,
+                "fname": fname,
+                "age": parseInt(age),
+                "gender": gender,
+            }
+        }
+    }
+
+    function validate_input(){
+        if(selected_event.title === "Dance Duo"){
+            if(!duo_name1 | !duo_name2)
+            {
+                showDanger("Please enter the names of both contestants!", "Okay")
+                return false
+            }
+        }
+        else if(selected_event.title === "Dance Group"){
+            if(!group_name)
+            {
+                showDanger("Please enter a group name !", "Okay")
+                return false
+            }
+        }
+        else{
+            if(!fname | !age | !gender | age < 4 | age > 60 | !parseInt(age))
+            {
+                showDanger("Please enter correct details !", "Okay")
+                return false
+            }
+        }
+        return true
+    }
+
+    let alert_data = $state();
+    function showModal(title) {
+        if (get_input_data() == false){ return false }
+
+        alert_data = {
+            "title": title,
+            "list_data": get_input_data(),
+        }
         dialogOpen = true;
+    }
+
+    let dangerModal_data = $state();
+    function showDanger(body, cancel){
+        dangerModal_data = {
+            "toggle": true,
+            "body": body,
+            "cancel": cancel
+        }
     }
 
     let events = $state();
@@ -49,13 +122,15 @@
         .catch((error) => {});
 
     function register() {
+        if (get_input_data() == false){ return false }
+
         let options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': "Bearer " + Cookies.get("jwt")
             },
-            body: JSON.stringify(input_data),
+            body: JSON.stringify(get_input_data()),
         };
 
         fetch(api_url + `/participants/`, options)
@@ -100,10 +175,25 @@
             </svg>
         </div>
 
-        {#if selected_event.title === "Dance Solo"}
+        {#if selected_event.title === "Dance Duo"}
+            <span class="field-title text-[.9rem] font-medium">1st dancer Name</span>
+            <input bind:value={duo_name1} type="text" class="inline-flex mb-[1rem] drop-shadow-sm items-center text-gray-600 py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"/>
+            <span class="field-title text-[.9rem] font-medium">2nd dancer Name</span>
+            <input bind:value={duo_name2} type="text" class="inline-flex mb-[1rem] drop-shadow-sm items-center text-gray-600 py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"/>
+            <button onclick={() => {showModal("Confirm Registration")}} class=" h-10 my-[1.5rem] text-white bg-blue-500 rounded-input bg-dark px-[21px] text-[15px] font-semibold text-background shadow-mini hover:bg-dark/95 active:scale-98 active:transition-all">
+                Register
+            </button>
+
+        {:else if selected_event.title === "Dance Group"}
+            <span class="field-title text-[.9rem] font-medium">Group Name</span>
+            <input bind:value={group_name} type="text" class="inline-flex mb-[1rem] drop-shadow-sm items-center text-gray-600 py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"/>
+            <button onclick={() => {showModal("Confirm Registration")}} class=" h-10 my-[1.5rem] text-white bg-blue-500 rounded-input bg-dark px-[21px] text-[15px] font-semibold text-background shadow-mini hover:bg-dark/95 active:scale-98 active:transition-all">
+                Register
+            </button>
+        {:else}
+
             <span class="field-title text-[.9rem] font-medium">Full Name</span>
             <input bind:value={fname} type="text" class="inline-flex mb-[1rem] drop-shadow-sm items-center text-gray-600 py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"/>
-
             <div class="participant-detail">
                 <div class="left">
                     <span class="field-title">Age</span>
@@ -114,7 +204,7 @@
                     <div class="group-select">
                         <select bind:value={gender} class="drop-shadow-sm bg-white text-gray-600 items-center rounded-md border border-border-input px-[11px] py-[10px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background">
                             <option selected disabled hidden></option>
-                            <option value="mal">Male</option>
+                            <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
                         <svg xmlns="http://www.w3.org/2000/svg" class="ml-auto size-6 text-muted-foreground text-gray-200" viewBox="0 0 256 256">
@@ -123,79 +213,49 @@
                             <polyline points="80 80 128 32 176 80" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
                         </svg>
                     </div>
-            
                 </div>
             </div>
-
-            <button onclick={gugu} class=" h-10 my-[1.5rem] text-white bg-blue-500 rounded-input bg-dark px-[21px] text-[15px] font-semibold text-background shadow-mini hover:bg-dark/95 active:scale-98 active:transition-all">
-                Register
-            </button>
-
-        {:else if selected_event.title === "Dance Duo"}
-            <span class="field-title text-[.9rem] font-medium">1st dancer Name</span>
-            <input bind:value={fname} type="text" class="inline-flex mb-[1rem] drop-shadow-sm items-center text-gray-600 py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"/>
-            <span class="field-title text-[.9rem] font-medium">2nd dancer Name</span>
-            <input bind:value={fname} type="text" class="inline-flex mb-[1rem] drop-shadow-sm items-center text-gray-600 py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"/>
-            <button onclick={gugu} class=" h-10 my-[1.5rem] text-white bg-blue-500 rounded-input bg-dark px-[21px] text-[15px] font-semibold text-background shadow-mini hover:bg-dark/95 active:scale-98 active:transition-all">
-                Register
-            </button>
-        {:else if selected_event.title === "Dance Group"}
-            <span class="field-title text-[.9rem] font-medium">Group Name</span>
-            <input bind:value={fname} type="text" class="inline-flex mb-[1rem] drop-shadow-sm items-center text-gray-600 py-[.5rem] rounded-md border border-border-input bg-background px-[11px] text-sm transition-colors placeholder:text-foreground-alt/50 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background"/>
-            <button onclick={gugu} class=" h-10 my-[1.5rem] text-white bg-blue-500 rounded-input bg-dark px-[21px] text-[15px] font-semibold text-background shadow-mini hover:bg-dark/95 active:scale-98 active:transition-all">
+            <button onclick={() => {showModal("Confirm Registration")}} class=" h-10 my-[1.5rem] text-white bg-blue-500 rounded-input bg-dark px-[21px] text-[15px] font-semibold text-background shadow-mini hover:bg-dark/95 active:scale-98 active:transition-all">
                 Register
             </button>
         {/if}
-        
-        
-
-        
-
-        {fname}
-        <br>
-        {age}
-        <br>
-        {gender}
-        <br>
-        {selected_event._id}
     </div>
 
     <AlertDialog.Root bind:open={dialogOpen}>
         <AlertDialog.Portal>
-          <AlertDialog.Overlay
-            transition={fade}
-            transitionConfig={{ duration: 150 }}
-            class="fixed inset-0 z-50 bg-black/80"
-          />
-          <AlertDialog.Content
-            transition={flyAndScale}
-            class="fixed bg-white left-[50%] top-[50%] z-50 grid w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-md border bg-background p-7 shadow-popover outline-none sm:max-w-lg md:w-full"
-          >
+          <AlertDialog.Overlay transition={fade} transitionConfig={{ duration: 150 }} class="fixed inset-0 z-50 bg-black/80"/>
+          <AlertDialog.Content transition={flyAndScale} class="fixed bg-white left-[50%] top-[50%] z-50 grid w-full max-w-[94%] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-md border bg-background p-7 shadow-popover outline-none sm:max-w-lg md:w-full">
             <div class="flex flex-col gap-4 pb-6">
-              <AlertDialog.Title class="text-lg font-semibold tracking-tight"
-                >Confirm Registration</AlertDialog.Title
-              >
-              <AlertDialog.Description class="text-sm text-foreground-alt">
-                Name: {input_data.fname}
-                <br>
-                Age: {input_data.age}
-                <br>
-                Gender: {input_data.gender}
-                <br>
-                Event: {selected_event.title}
-              </AlertDialog.Description>
+                <AlertDialog.Title class="text-lg font-semibold tracking-tight">
+                    {alert_data.title}
+                </AlertDialog.Title>
+                <AlertDialog.Description class="text-sm text-foreground-alt">
+                    {#if selected_event.title === "Dance Solo"}
+                        Name: {alert_data.list_data.fname}
+                        <br>
+                        Age: {alert_data.list_data.age}
+                        <br>
+                        Gender: {alert_data.list_data.gender}
+                        <br>
+                        Event: {selected_event.title}
+                        <br>
+                        Amount: {selected_event.amount}
+                    {/if}
+                </AlertDialog.Description>
             </div>
             <div class="flex w-full items-center justify-center gap-2">
-              <AlertDialog.Cancel
-                class="inline-flex bg-gray-200 py-[.5rem] mx-auto h-input w-full items-center justify-center rounded-input bg-muted text-[15px] font-medium shadow-mini transition-all hover:bg-dark-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
-                >Cancel</AlertDialog.Cancel>
-                <AlertDialog.Action onclick={register}
-                class="inline-flex bg-black py-[.5rem] text-white h-input w-full items-center justify-center rounded-input bg-dark text-[15px] font-semibold text-background shadow-mini transition-all hover:bg-dark/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dark focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98"
-                >Continue</AlertDialog.Action>
+                <AlertDialog.Cancel class="inline-flex bg-gray-200 py-[.5rem] mx-auto h-input w-full items-center justify-center rounded-input bg-muted text-[15px] font-medium shadow-mini transition-all hover:bg-dark-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98">
+                    Cancel
+                </AlertDialog.Cancel>
+                <AlertDialog.Action onclick={register} class="inline-flex bg-black py-[.5rem] text-white h-input w-full items-center justify-center rounded-input bg-dark text-[15px] font-semibold text-background shadow-mini transition-all hover:bg-dark/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dark focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-98">
+                    Continue
+                </AlertDialog.Action>
             </div>
           </AlertDialog.Content>
         </AlertDialog.Portal>
-      </AlertDialog.Root>
+    </AlertDialog.Root>
+
+    <DangerModal {...dangerModal_data}/>
 {:else}
     <Loader />
 {/if}
