@@ -21,13 +21,6 @@
     let dialogOpen = $state(false);
     let alertOpen = $state(false);
 
-    let input_data = $derived({
-        "eventId": selected_event._id,
-        "fname": fname,
-        "age": parseInt(age),
-        "gender": gender,
-    });
-
     function get_input_data(){
         if(validate_input() == false){ return false }
 
