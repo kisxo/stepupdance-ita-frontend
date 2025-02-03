@@ -8,7 +8,7 @@
     import { flyAndScale } from "$lib/bits-ui/utils/transitions";
     import { derived } from "svelte/store";
     import { parse } from "svelte/compiler";
-    import DangerModal from "./DangerModal.svelte";
+    import DangerModal from "$lib/components/DangerModal.svelte";
     let { category } = $props();
 
     let fname = $state();
