@@ -6,6 +6,7 @@
 
     import Loader from "$lib/components/Loader.svelte";
     import RegisterForm from "./RegisterForm.svelte";
+    import DanceRegistrationForm from "./DanceRegistrationForm.svelte";
 
     let auth_state = $state(false);
 
@@ -48,7 +49,12 @@
 </script>
 
 {#if auth_state}
-    <RegisterForm {category} />
+    {#if category == 'dance'}
+        <DanceRegistrationForm {category}/>
+    {:else}
+        <RegisterForm {category} />
+    {/if}
+    
 {:else}
     <Loader />
 {/if}
