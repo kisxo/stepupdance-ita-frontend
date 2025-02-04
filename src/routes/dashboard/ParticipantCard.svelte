@@ -4,18 +4,25 @@
 
 <div class="card-container box-shadow bg-white">
     <div class="heading">
-        <span class="title"> {participant.detail.title} </span>
+        <span class="title"> {participant.event_detail.title} </span>
         <span class="event-detail">
-            {participant.detail.date}
+            {participant.event_detail.date}
             <br />
-            &#8377; {participant.detail.amount}
+            &#8377; {participant.event_detail.amount}
         </span>
     </div>
 
     <div class="participant-detail">
-        <span> Name: {participant.fname} </span>
-        <span>Age: {participant.age}</span>
-        <span>Gender: {participant.gender}</span>
+        {#if participant.event_detail.title == "Dance Duo"}
+            <span> Fist: {participant.duo_name1} </span>
+            <span> Second: {participant.duo_name2} </span>
+        {:else if participant.event_detail.title == "Dance Group"}
+            <span> Group Name: {participant.group_name} </span>
+        {:else}
+            <span> Name: {participant.fname} </span>
+            <span>Age: {participant.age}</span>
+            <span>Gender: {participant.gender}</span>
+        {/if}
         <span> Payment Method: {participant.payment_method}</span>
         <span class="payment-status">
             Payment Status:
@@ -76,7 +83,7 @@
         font-size: 0.9rem;
         background-color: #16c47f;
         border-radius: 0 2rem 2rem 0;
-        padding: 0.5rem 2rem;
+        padding: 0.3rem 1.5rem;
         color: white;
     }
 
