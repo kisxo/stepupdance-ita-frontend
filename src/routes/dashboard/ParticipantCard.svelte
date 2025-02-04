@@ -14,8 +14,8 @@
 
     <div class="participant-detail">
         {#if participant.event_detail.title == "Dance Duo"}
-            <span> Fist: {participant.duo_name1} </span>
-            <span> Second: {participant.duo_name2} </span>
+            <span> Name: {participant.duo_name1} </span>
+            <span> Name: {participant.duo_name2} </span>
         {:else if participant.event_detail.title == "Dance Group"}
             <span> Group Name: {participant.group_name} </span>
         {:else}
