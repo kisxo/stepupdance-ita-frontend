@@ -3,6 +3,9 @@
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
     import { api_url } from "$lib/config";
+    import SuccessModal from "$lib/components/SuccessModal.svelte";
+    import DangerModal from "$lib/components/DangerModal.svelte";
+    import axios from "axios";
 
     const page_url = $page.url;
     let redirect_url;
@@ -15,34 +18,55 @@
         redirect_url = page_url.searchParams.get("redirect");
     }
 
+    let dangerModal_data = $state();
+    function showDanger(body, cancel){
+        dangerModal_data = {
+            "toggle": true,
+            "body": body,
+            "cancel": cancel
+        }
+    }
+
+    let successModal_data = $state();
+    function showSuccess(body, cancel, redirect){
+        successModal_data = {
+            "toggle": true,
+            "body": body,
+            "cancel": cancel,
+            "redirect": redirect,
+        }
+    }
+
     function login() {
         let data = {
-            phone: phone,
-            password: password,
+            "phone": phone,
+            "password": password,
         };
         let options = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
+            }
         };
 
-        fetch(api_url + `/token/`, options)
-            .then((response) => {
-                if (!response.ok) {
-                    // user_exists = false;
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                Cookies.set("jwt", data.access_token);
+        axios.post(api_url + '/token/', data, options)
+        .then((response) => {
+            if (response.status ===200)
+            {
+                Cookies.set("jwt", response.data.access_token);
                 goto(redirect_url);
-            })
-            .catch((error) => {
-                console.error("Fetch error:", error);
-            });
+            }
+        })
+        .catch(function (error) {
+            if(error.status === 422)
+            {
+                showDanger("Enter both Phone and Password !", "Ok")
+            }
+            if(error.status === 401)
+            {
+                showDanger(error.response.data.detail, "Ok")
+            }
+        });
     }
 </script>
 
@@ -66,6 +90,9 @@
         <button onclick={login} class="button" type="button"> Login </button>
     </form>
 </div>
+
+<DangerModal {...dangerModal_data}/>
+<SuccessModal {...successModal_data}/>
 
 <style>
     .auth-card {
