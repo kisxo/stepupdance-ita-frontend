@@ -33,7 +33,13 @@
     });
 </script>
 
+{#if participants == ""}
+    <h4 class="m-[1rem] font-bold">You have not registered for any events !</h4>
+{/if}
 <div class="participant-list">
+    <a href="/register" class="mx-auto bg-pink-500 px-[2rem] py-[.5rem] rounded-md font-bold text-white">
+        Register Now
+    </a>
     {#each participants as participant}
         <ParticipantCard {...participant}/>
 	{/each}
