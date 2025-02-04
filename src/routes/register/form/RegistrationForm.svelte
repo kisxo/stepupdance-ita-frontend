@@ -9,6 +9,9 @@
     import { derived } from "svelte/store";
     import { parse } from "svelte/compiler";
     import DangerModal from "$lib/components/DangerModal.svelte";
+    import SuccessModal from "$lib/components/SuccessModal.svelte";
+    import axios from "axios";
+    import { goto } from "$app/navigation";
     let { category } = $props();
 
     let fname = $state();
@@ -92,6 +95,16 @@
         }
     }
 
+    let successModal_data = $state();
+    function showSuccess(body, cancel, redirect){
+        successModal_data = {
+            "toggle": true,
+            "body": body,
+            "cancel": cancel,
+            "redirect": redirect,
+        }
+    }
+
     let events = $state();
     const page_url = $page.url;
 
@@ -117,27 +130,31 @@
     function register() {
         if (get_input_data() == false){ return false }
 
+        let data = get_input_data();
         let options = {
-            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': "Bearer " + Cookies.get("jwt")
-            },
-            body: JSON.stringify(get_input_data()),
+            }
         };
-
-        fetch(api_url + `/participants/`, options)
-            .then((response) => {
-                console.log(response)
-                return response.json();
-            })
-            .then((data) => {
-                // alert("Success")
-            })
-            .catch((error) => {
-                console.error("Fetch error:", error);
-            });
-        }
+        axios.post(api_url + '/participants/', data, options)
+        .then((response) => {
+            if(response.status === 201)
+            {
+                showSuccess("Create successful", "Continue", "/dashboard")
+            }
+        })
+        .catch(function (error) {
+            if(error.status === 422)
+            {
+                showDanger("Enter a Password !", "Ok")
+            }
+            if(error.status === 400)
+            {
+                showDanger(error.response.data.detail, "Ok")
+            }
+        });
+    }
 </script>
 
 {#if events}
@@ -249,6 +266,7 @@
     </AlertDialog.Root>
 
     <DangerModal {...dangerModal_data}/>
+    <SuccessModal {...successModal_data}/>
 {:else}
     <Loader />
 {/if}
