@@ -47,7 +47,11 @@
             {
                 goto("/auth/login?redirect=" + redirect_url + "&phone=" +phone );
             }
-            page_status = "Signup"
+            else if (response.data.userExists == false)
+            {
+                page_status = "Signup"
+            }
+            
         })
         .catch(function (error) {
             if(error.status === 422)
