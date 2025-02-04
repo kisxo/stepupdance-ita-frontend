@@ -4,6 +4,8 @@
     import { goto } from "$app/navigation";
     import { api_url } from "$lib/config";
     import { readonly } from "svelte/store";
+    import DangerModal from "$lib/components/DangerModal.svelte";
+    import axios from "axios";
 
     const page_url = $page.url;
     let redirect_url;
@@ -17,6 +19,16 @@
     let phone = $state();
     let password = $state();
     let confirm_password = $state();
+    let page_status = $state("CheckPhone");
+
+    let dangerModal_data = $state();
+    function showDanger(body, cancel){
+        dangerModal_data = {
+            "toggle": true,
+            "body": body,
+            "cancel": cancel
+        }
+    }
 
     function check_phone() {
         let options = {
@@ -25,35 +37,37 @@
                 "Content-Type": "application/json",
             },
         };
+        axios.get(api_url + '/users/check', {
+            params: {
+            phone: phone
+            }
+        })
+        .then(function (response) {
+            if(response.data.userExists == true)
+            {
+                goto("/auth/login?redirect=" + redirect_url + "&phone=" +phone );
+            }
+            page_status = "Signup"
+        })
+        .catch(function (error) {
+            if(error.status === 422)
+            {
+                showDanger("Enter a number !", "Ok")
+            }
+            if(error.status === 400)
+            {
+                showDanger(error.response.data.detail, "Ok")
+            }
+        })
+        .finally(function () {
+            // always executed
+        });  
 
-        fetch(api_url + `/users/check?phone=` + phone, options)
-            .then((response) => {
-                if (!response.ok) {
-                    // user_exists = false;
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (data) {
-                    goto(
-                        "/auth/login?redirect=" +
-                            redirect_url +
-                            "&phone=" +
-                            phone
-                    );
-                } else {
-                    new_user = true;
-                }
-            })
-            .catch((error) => {
-                console.error("Fetch error:", error);
-            });
     }
 
-    function signup() {
+    async function signup() {
         if (password != confirm_password) {
-            alert("Password must be same!");
+            showDanger("Password must does not match !", "Okay")
             return;
         }
 
@@ -62,36 +76,48 @@
             password: password,
         };
         let options = {
-            method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
+            }
         };
+        axios.post(api_url + '/users/', data, options)
+        .then((response) => {
+            goto("/auth/login?redirect=" +redirect_url +"&phone=" +phone);
+        })
+        .catch(function (error) {
+            if(error.status === 422)
+            {
+                showDanger("Enter a Password !", "Ok")
+            }
+            if(error.status === 400)
+            {
+                showDanger(error.response.data.detail, "Ok")
+            }
+        });
 
-        fetch(api_url + `/users/`, options)
-            .then((response) => {
-                if (!response.ok) {
-                    // user_exists = false;
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (data) {
-                    goto(
-                        "/auth/login?redirect=" +
-                            redirect_url +
-                            "&phone=" +
-                            phone
-                    );
-                } else {
-                    alert("Try Again");
-                }
-            })
-            .catch((error) => {
-                console.error("Fetch error:", error);
-            });
+        // fetch(api_url + `/users/`, options)
+        //     .then((response) => {
+        //         if (!response.ok) {
+        //             // user_exists = false;
+        //             throw new Error("Network response was not ok");
+        //         }
+        //         return response.json();
+        //     })
+        //     .then((data) => {
+        //         if (data) {
+        //             goto(
+        //                 "/auth/login?redirect=" +
+        //                     redirect_url +
+        //                     "&phone=" +
+        //                     phone
+        //             );
+        //         } else {
+        //             alert("Try Again");
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.error("Fetch error:", error);
+        //     });
     }
 </script>
 
@@ -99,7 +125,18 @@
     <form class="form">
         <label for="phone">Phone number:</label>
 
-        {#if new_user}
+        {#if page_status == "CheckPhone"}
+            <input
+                bind:value={phone}
+                type="tel"
+                id="phone"
+                name="phone"
+                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+            />
+            <button onclick={check_phone} class="button" type="button">
+                Verify
+            </button>
+        {:else if page_status == "Signup"}
             <input
                 bind:value={phone}
                 type="tel"
@@ -124,21 +161,12 @@
             />
             <button onclick={signup} class="button" type="button">
                 SignUp
-            </button>
-        {:else}
-            <input
-                bind:value={phone}
-                type="tel"
-                id="phone"
-                name="phone"
-                pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-            />
-            <button onclick={check_phone} class="button" type="button">
-                Verify
-            </button>
+            </button>   
         {/if}
     </form>
 </div>
+
+<DangerModal {...dangerModal_data}/>
 
 <style>
     .auth-card {
