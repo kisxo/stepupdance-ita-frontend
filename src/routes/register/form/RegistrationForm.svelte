@@ -166,7 +166,7 @@
             <span class="text-base text-gray-600 font-semibold">
                 Date: {events[0].date}
                 <br />
-                Location: Satupathar
+                Location: Sarupathar
             </span>
         </div>
 
